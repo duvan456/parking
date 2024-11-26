@@ -1,0 +1,135 @@
+<p-table [value]="parqueaderos" [(selection)]="selectedParqueadero" dataKey="id" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" (onRowSelect)="seleccionarParqueadero()">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Nombre</th>
+          <th>NIT</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-parqueadero>
+      <tr>
+          <td>{{parqueadero.nombre}}</td>
+          <td>{{parqueadero.nit}}</td>
+          <td>{{parqueadero.direccion}}</td>
+          <td>{{parqueadero.telefono}}</td>
+      </tr>
+  </ng-template>
+</p-table>
+
+<!-- Botón para agregar nuevo parqueadero -->
+<p-button label="Nuevo Parqueadero" icon="pi pi-plus" (onClick)="verFormParqueadero = true"></p-button>
+
+<!-- Formulario de Parqueadero -->
+<p-dialog header="Crear / Editar Parqueadero" [(visible)]="verFormParqueadero" [style]="{ width: '25rem' }" (onHide)="cancel()">
+<form [formGroup]="formParqueadero" class="flex flex-column gap-5">
+  <div class="flex flex-column gap-2">
+    <label for="nombre">Nombre</label>
+    <input formControlName="nombre" pInputText id="nombre"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="nit">NIT</label>
+    <input formControlName="nit" pInputText id="nit"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="direccion">Dirección</label>
+    <input formControlName="direccion" pInputText id="direccion"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="telefono">Teléfono</label>
+    <input formControlName="telefono" pInputText id="telefono"/>
+  </div>
+</form>
+<div class="flex justify-content-end gap-2 mt-4">
+  <p-button label="Cancelar" severity="secondary" (onClick)="cancel()" />
+  <p-button label="Guardar" [disabled]="!formParqueadero.valid" (onClick)="accionFormularioParqueadero()" />
+</div>
+</p-dialog>
+
+<!-- Vehículos -->
+<p-table [value]="vehiculos" [(selection)]="selectedVehiculo" dataKey="id" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" selectionMode="single" (onRowSelect)="seleccionarVehiculo()">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Placa</th>
+          <th>Propietario</th>
+          <th>Parqueadero</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-vehiculo>
+      <tr>
+          <td>{{vehiculo.placa}}</td>
+          <td>{{vehiculo.propietario.nombres}}</td>
+          <td>{{vehiculo.parqueadero.nombre}}</td>
+      </tr>
+  </ng-template>
+</p-table>
+
+<!-- Botón para agregar nuevo vehículo -->
+<p-button label="Nuevo Vehículo" icon="pi pi-plus" (onClick)="verFormVehiculo = true"></p-button>
+
+<!-- Formulario de Vehículo -->
+<p-dialog header="Crear / Editar Vehículo" [(visible)]="verFormVehiculo" [style]="{ width: '25rem' }" (onHide)="cancel()">
+<form [formGroup]="formVehiculo" class="flex flex-column gap-5">
+  <div class="flex flex-column gap-2">
+    <label for="placa">Placa</label>
+    <input formControlName="placa" pInputText id="placa"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="propietario_id">Propietario</label>
+    <p-dropdown [options]="propietarios" formControlName="propietario_id" optionLabel="nombres" placeholder="Seleccionar propietario"></p-dropdown>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="parqueadero_id">Parqueadero</label>
+    <p-dropdown [options]="parqueaderos" formControlName="parqueadero_id" optionLabel="nombre" placeholder="Seleccionar parqueadero"></p-dropdown>
+  </div>
+</form>
+<div class="flex justify-content-end gap-2 mt-4">
+  <p-button label="Cancelar" severity="secondary" (onClick)="cancel()" />
+  <p-button label="Guardar" [disabled]="!formVehiculo.valid" (onClick)="accionFormularioVehiculo()" />
+</div>
+</p-dialog>
+
+<!-- Propietarios -->
+<p-table [value]="propietarios" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Nombre</th>
+          <th>Identificación</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-propietario>
+      <tr>
+          <td>{{propietario.nombres}}</td>
+          <td>{{propietario.identificacion}}</td>
+      </tr>
+  </ng-template>
+</p-table>
+
+<!-- Botón para agregar nuevo propietario -->
+<p-button label="Nuevo Propietario" icon="pi pi-plus" (onClick)="verFormUsuario = true"></p-button>
+
+<!-- Formulario de Usuario -->
+<p-dialog header="Crear / Editar Usuario" [(visible)]="verFormUsuario" [style]="{ width: '25rem' }" (onHide)="cancel()">
+<form [formGroup]="formUsuario" class="flex flex-column gap-5">
+  <div class="flex flex-column gap-2">
+    <label for="username">Username</label>
+    <input formControlName="username" pInputText id="username"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="email">Email</label>
+    <input formControlName="email" pInputText id="email"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="password">Contraseña</label>
+    <input formControlName="password" type="password" pInputText id="password"/>
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="parqueadero_id">Parqueadero</label>
+    <p-dropdown [options]="parqueaderos" formControlName="parqueadero_id" optionLabel="nombre" placeholder="Seleccionar parqueadero"></p-dropdown>
+  </div>
+</form>
+<div class="flex justify-content-end gap-2 mt-4">
+  <p-button label="Cancelar" severity="secondary" (onClick)="cancel()" />
+  <p-button label="Guardar" [disabled]="!formUsuario.valid" (onClick)="accionFormularioUsuario()" />
+</div>
+</p-dialog>
